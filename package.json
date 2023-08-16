@@ -1,0 +1,17 @@
+{
+  "name": "console-stream-proxy-cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": "bin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pellegrino Durante",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "commander": "^11.0.0",
+    "dns2": "^2.1.0",
+    "node-media-server": "^2.6.2"
+  }
+}
