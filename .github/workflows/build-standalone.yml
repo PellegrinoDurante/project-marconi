@@ -31,7 +31,7 @@ jobs:
         run: |
           file_basename=$(basename "${{ steps.pkg.outputs.file }}")
           file_name="${file_basename%.*}"
-          file_ext="${file_basename##*.}"
+          file_ext="${file_basename#$file_name.}"
           asset_name="$file_name-${{ matrix.os }}"
           if [ ! -z "${file_ext}" ]; then
             asset_name="$asset_name.$file_ext"
