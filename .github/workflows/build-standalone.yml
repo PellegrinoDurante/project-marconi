@@ -27,6 +27,7 @@ jobs:
           arch: x64
           node-version: node18
           os: ${{ matrix.os }}
+          options: --output "project-marconi-${{ matrix.os }}"
           upload: false
       - id: get_asset_name
         run: |
