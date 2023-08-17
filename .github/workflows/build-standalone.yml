@@ -5,6 +5,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch:
+          - x64
+          - arm64
+        node-version:
+          - node18
+        os:
+          - linux
+          - macos
+          - win
     steps:
       - uses: actions/checkout@v3
       - uses: lando/pkg-action@v2
