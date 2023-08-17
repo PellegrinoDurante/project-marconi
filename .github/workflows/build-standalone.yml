@@ -8,7 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
       matrix:
         os:
           - linux
@@ -27,11 +26,12 @@ jobs:
           arch: x64
           node-version: node18
           os: ${{ matrix.os }}
-          options: --output "project-marconi-${{ matrix.os }}"
           upload: false
       - id: get_asset_name
         run: |
-          asset_name=$(basename "${{ steps.pkg.outputs.file }}")
+          file_name="${${{ steps.pkg.outputs.file }}%.*}"
+          file_ext="${${{ steps.pkg.outputs.file }}##*.}"
+          asset_name="$file_name-${{ matrix.os }}-$file_ext"
           echo "asset_name=$asset_name" >> "$GITHUB_OUTPUT"
       - id: get_release
         uses: bruceadams/get-release@v1.3.2
