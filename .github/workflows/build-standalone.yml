@@ -25,8 +25,8 @@ jobs:
           upload: false
       - id: get_asset_name
         run: |
-          asset_name=basename "${{ steps.pkg.outputs.file }}"
-          echo $asset_name
+          asset_name=$(basename "${{ steps.pkg.outputs.file }}")
+          echo "asset_name=$asset_name" >> "$GITHUB_OUTPUT"
       - id: get_release
         uses: bruceadams/get-release@v1.3.2
         env:
