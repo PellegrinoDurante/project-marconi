@@ -1,17 +1,17 @@
 {
-  "name": "console-stream-proxy-cli",
+  "name": "project-marconi",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple DNS and media server which allow you to stream from your console to your computer.",
   "bin": "bin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pellegrino Durante",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "axios": "^1.4.0",
     "commander": "^11.0.0",
     "dns2": "^2.1.0",
+    "node-fetch": "^2.6.12",
     "node-media-server": "^2.6.2"
   }
 }

@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-const axios = require("axios");
-var url = require("url");
 const { program } = require("commander");
+const fetch = require('node-fetch');
 const { getLocalAddresses } = require("./utils");
 const { startServer: startDnsServer } = require("./dns");
 const { startServer: startMediaServer } = require("./media");
@@ -15,7 +14,10 @@ program
   )
   .version("1.0.0")
 
-  .option("-l, --local-address <ip>", "Local IP address to use (usually 192.168.1.x)")
+  .option(
+    "-l, --local-address <ip>",
+    "Local IP address to use (usually 192.168.1.x)"
+  )
   .option("-p, --public-address <ip>", "Public IP address to use")
   .option("-i, --ingest-hosts <hosts...>", "Ingest hosts to intercept")
 
@@ -41,7 +43,7 @@ program
     // Check public address
     if (!publicAddress) {
       try {
-        publicAddress = await (await axios.get("https://api.ipify.org")).data;
+        publicAddress = await (await fetch("https://api.ipify.org")).text();
       } catch {
         console.log(
           "⚠ I can't detect your public IP address! If you plan to use this tool with consoles outside your local network, the public IP address is required to work properly."
@@ -53,8 +55,8 @@ program
     if (!options.ingestHosts) {
       try {
         const data = await (
-          await axios.get("https://ingest.twitch.tv/ingests")
-        ).data;
+          await fetch("https://ingest.twitch.tv/ingests")
+        ).json();
 
         ingestHosts = data.ingests
           .map((ingest) => ingest.url_template)
@@ -73,7 +75,9 @@ program
 
     function checkStatus() {
       if (dnsStatus && mediaStatus) {
-        console.log("ℹ You can see a preview of your streams on http://localhost:8000/admin/streams");
+        console.log(
+          "ℹ You can see a preview of your streams on http://localhost:8000/admin/streams"
+        );
         console.log("⏳ Waiting for streams...");
       }
     }
@@ -109,8 +113,10 @@ program
       );
 
       mediaServer = startMediaServer(
-        (streamPath) => console.log(`🚀 Stream started: rtmp://127.0.0.1${streamPath}`),
-        (streamPath) => console.log(`😢 Stream ended: rtmp://127.0.0.1${streamPath}`)
+        (streamPath) =>
+          console.log(`🚀 Stream started: rtmp://127.0.0.1${streamPath}`),
+        (streamPath) =>
+          console.log(`😢 Stream ended: rtmp://127.0.0.1${streamPath}`)
       );
 
       mediaStatus = true;
