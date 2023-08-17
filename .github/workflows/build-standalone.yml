@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch:
-          - x64
         os:
+          - linux
+          - macos
           - win
     steps:
       - uses: actions/checkout@v3
@@ -20,7 +20,8 @@ jobs:
       - uses: lando/pkg-action@v2
         with:
           entrypoint: bin.js
-          arch: ${{ matrix.arch }}
+          arch: x64
           node-version: node18
           os: ${{ matrix.os }}
+      - run: echo ${{ steps.pkg-action.outputs.file }}
       
