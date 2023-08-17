@@ -9,16 +9,18 @@ jobs:
       matrix:
         arch:
           - x64
-        node-version:
-          - node18
         os:
           - win
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - run: npm ci
       - uses: lando/pkg-action@v2
         with:
           entrypoint: bin.js
           arch: ${{ matrix.arch }}
-          node-version: ${{ matrix.node-version }}
+          node-version: node18
           os: ${{ matrix.os }}
       
