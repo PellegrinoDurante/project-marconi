@@ -1,0 +1,13 @@
+name: Build standalone executables
+on:
+  release:
+    types: ["published"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: lando/pkg-action@v2
+        with:
+          entrypoint: bin.js
+      
