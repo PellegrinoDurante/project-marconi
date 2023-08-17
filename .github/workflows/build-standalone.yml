@@ -15,12 +15,26 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm ci
-      - uses: lando/pkg-action@v2
-        id: pkg
+      - id: pkg
+        uses: lando/pkg-action@v2
         with:
           entrypoint: bin.js
           arch: x64
           node-version: node18
           os: ${{ matrix.os }}
-      - run: echo ${{ steps.pkg.outputs.file }}
+          upload: false
+      - id: get_asset_name
+        run: echo "asset_name=$(basename ${{ steps.pkg.outputs.file }})" >> "$GITHUB_OUTPUT"
+      - id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ${{ steps.pkg.outputs.file }}
+          asset_name: ${{ steps.get_asset_name.outputs.asset_name }}
+          asset_content_type: application/octet-stream
       
