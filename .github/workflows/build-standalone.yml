@@ -1,4 +1,6 @@
 name: Build standalone executables
+permissions:
+  contents: write
 on:
   release:
     types: ["published"]
