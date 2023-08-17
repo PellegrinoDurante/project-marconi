@@ -35,12 +35,9 @@ jobs:
         uses: bruceadams/get-release@v1.3.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload artifact and release
+        uses: nanoufo/action-upload-artifacts-and-release-assets@main  
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ${{ steps.pkg.outputs.file }}
-          asset_name: ${{ steps.get_asset_name.outputs.asset_name }}
-          asset_content_type: application/octet-stream
-      
+          path: ${{ steps.pkg.outputs.file }}
+          upload-release-files: true
+          release-upload-url: ${{ steps.get_release.outputs.upload_url }}
