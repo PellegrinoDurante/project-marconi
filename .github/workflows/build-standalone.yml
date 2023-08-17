@@ -8,6 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix:
         os:
           - linux
@@ -35,8 +36,7 @@ jobs:
         uses: bruceadams/get-release@v1.3.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Upload artifact and release
-        uses: nanoufo/action-upload-artifacts-and-release-assets@main  
+      - uses: nanoufo/action-upload-artifacts-and-release-assets@main  
         with:
           path: ${{ steps.pkg.outputs.file }}
           upload-release-files: true
