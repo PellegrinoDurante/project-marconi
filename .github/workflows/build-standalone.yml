@@ -27,7 +27,7 @@ jobs:
           node-version: node18
           os: ${{ matrix.os }}
           upload: false
-      - id: get_asset_name
+      - id: asset
         run: |
           file_basename=$(basename "${{ steps.pkg.outputs.file }}")
           file_name="${file_basename%.*}"+
@@ -36,13 +36,16 @@ jobs:
           if [ ! -z "${file_ext}" ]; then
             asset_name="$asset_name.$file_ext"
           fi
-          echo "asset_name=$asset_name" >> "$GITHUB_OUTPUT"
+          asset_path=$(dirname "${{ steps.pkg.outputs.file }}")
+          asset_filepath="$asset_path/$asset_name"
+          mv "${{ steps.pkg.outputs.file }}" "$asset_filepath"
+          echo "asset_filepath=$asset_filepath" >> "$GITHUB_OUTPUT"
       - id: get_release
         uses: bruceadams/get-release@v1.3.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - uses: nanoufo/action-upload-artifacts-and-release-assets@main  
         with:
-          path: ${{ steps.pkg.outputs.file }}
+          path: ${{ steps.asset.outputs.asset_filepath }}
           upload-release-files: true
           release-upload-url: ${{ steps.get_release.outputs.upload_url }}
