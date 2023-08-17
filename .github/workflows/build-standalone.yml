@@ -9,12 +9,9 @@ jobs:
       matrix:
         arch:
           - x64
-          - arm64
         node-version:
           - node18
         os:
-          - linux
-          - macos
           - win
     steps:
       - uses: actions/checkout@v3
